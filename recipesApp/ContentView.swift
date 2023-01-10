@@ -10,59 +10,61 @@ import SwiftUI
 struct ContentView: View {
   @State private var selectedIndex: Int = 0
   private let categories = ["All","Apps", "Mains", "Sids", "Dess", "Dris","Other"]
-  private let recipeNames = ["Fetuccine Alfredo", "Chivito uruguayo", "Walnut Roll Gužvara", "Fresh sardines"]
+  private let recipeNames = ["Fetuccine Alfredo", "Chivito uruguayo", "Walnut Roll", "Fresh sardines"]
     var body: some View {
         ZStack {
           Color("background-color")
             .edgesIgnoringSafeArea(.all)
          
-          VStack(alignment: .leading){
-            AppBarView()
-            TagLineView()
-              .padding()
-            SearchAndScanView()
-            
-            ScrollView(.horizontal, showsIndicators: false){
-              HStack{
-                ForEach(0 ..< categories.count) { i in
-                  // If index(i) == 1 then isActive is true
-                  CategoryView(isActive: i == selectedIndex, text: categories[i])
-                    .onTapGesture {
-                      selectedIndex = i
-                    }
-                }
-              }.padding()
+          ScrollView {
+            VStack(alignment: .leading){
+              AppBarView()
+              TagLineView()
+                .padding()
+              SearchAndScanView()
+              
+              ScrollView(.horizontal, showsIndicators: false){
+                HStack{
+                  ForEach(0 ..< categories.count) { i in
+                    // If index(i) == 1 then isActive is true
+                    CategoryView(isActive: i == selectedIndex, text: categories[i])
+                      .onTapGesture {
+                        selectedIndex = i
+                      }
+                  }
+                }.padding()
+              }
+              
+              Text("Popular")
+                .font(.custom("Inter-Bold", size: 26))
+                .padding(.horizontal)
+                .foregroundColor(Color("text-normal"))
+              
+              ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                  ForEach(0 ..< 4) { index in
+                    ProductCardView(image: Image("recipe-0\(index + 1)"), size: 210, recipeName: recipeNames[index])
+                  }
+                }.padding(.trailing)
+              }
+              .padding(.leading)
+              
+              Text("Best")
+                .font(.custom("Inter-Bold", size: 26))
+                .padding(.horizontal)
+                .foregroundColor(Color("text-normal"))
+              
+              ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                  ForEach(0 ..< 4) { index in
+                    ProductCardView(image: Image("recipe-0\(index + 1)"), size: 180, recipeName: recipeNames[index])
+                  }
+                }.padding(.trailing)
+              }
+              .padding(.leading)
+               
+              
             }
-            
-            Text("Popular")
-              .font(.custom("Inter-Bold", size: 24))
-              .padding(.horizontal)
-              .foregroundColor(Color.black)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-              HStack {
-                ForEach(0 ..< 4) { index in
-                  ProductCardView(image: Image("recipe-0\(index + 1)"), recipeName: recipeNames[index])
-                }
-              }.padding(.trailing)
-            }
-            .padding(.leading)
-            
-            Text("Popular")
-              .font(.custom("Inter-Bold", size: 24))
-              .padding(.horizontal)
-              .foregroundColor(Color.black)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-              HStack {
-                ForEach(0 ..< 4) { index in
-                  ProductCardView(image: Image("recipe-0\(index + 1)"), recipeName: recipeNames[index])
-                }
-              }.padding(.trailing)
-            }
-            .padding(.leading)
-             
-            
           }
           
         }
@@ -157,18 +159,19 @@ struct CategoryView: View {
 
 struct ProductCardView: View {
   let image: Image
+  let size: CGFloat
   let recipeName: String
   var body: some View {
     VStack {
       image
         .resizable()
-        .frame(width: 210, height: 200)
+        .frame(width: size, height: 200 * (size/210))
         .cornerRadius(20.0)
       
       Text(recipeName)
         .font(.title3)
         .fontWeight(.bold)
-        .foregroundColor(Color.black)
+        .foregroundColor(Color("text-normal"))
       
       HStack(spacing: 2){
         ForEach(/*@START_MENU_TOKEN@*/0 ..< 5/*@END_MENU_TOKEN@*/) { item in
@@ -178,12 +181,12 @@ struct ProductCardView: View {
         Text("S/. 30.00")
           .font(.title3)
           .fontWeight(.bold)
-          .foregroundColor(Color.black)
+          .foregroundColor(Color("text-normal"))
         
       }
       
     }
-    .frame(width: 210)
+    .frame(width: size)
     .padding()
     .background(Color.white)
     .cornerRadius(20.0)
