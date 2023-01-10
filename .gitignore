@@ -1,0 +1,11 @@
+# Xcode user state files
+**/*.xcodeproj/project.xcworkspace/xcuserdata/*
+
+# Xcode scheme management files
+**/*.xcodeproj/xcuserdata/*/xcschemes/xcschememanagement.plist
+
+# Xcode shared data
+**/*.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+
+# SO
+*.DS_Store
