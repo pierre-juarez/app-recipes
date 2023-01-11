@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct DetailScreen: View {
+  @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
   var body: some View {
     ZStack {
       Color("background-color")
@@ -17,11 +18,11 @@ struct DetailScreen: View {
         Image("recipe-01")
           .resizable()
           .aspectRatio(contentMode: .fit)
-          .edgesIgnoringSafeArea(.top)
         
         DescriptionView()
           .offset(y: -40)
       }
+      .edgesIgnoringSafeArea(.top)
       
       HStack {
         Text("S/. 30.00")
@@ -51,6 +52,12 @@ struct DetailScreen: View {
       
     }
     .edgesIgnoringSafeArea(.bottom)
+    .navigationBarBackButtonHidden(true)
+    .navigationBarItems(leading: CustomBackButtonView(action: {presentationMode.wrappedValue.dismiss()}),
+                        trailing: Image("three")
+                                    .resizable()
+                                    .frame(width: 20, height: 20)
+    )
   }
 }
 
@@ -129,7 +136,7 @@ struct DescriptionView: View {
       
       HStack(alignment: .bottom){
         VStack(alignment: .leading){
-          Text("Colors")
+          Text("Beverage flavor")
             .fontWeight(.bold)
           
           HStack {
@@ -189,5 +196,18 @@ struct ColorDotView: View {
     color
       .frame(width: 24, height: 24)
       .clipShape(Capsule())
+  }
+}
+
+struct CustomBackButtonView: View {
+  let action: ()->Void
+  var body: some View {
+    Button(action: action){
+      Image(systemName: "chevron.backward")
+        .padding(.all, 12)
+        .background(Color.white)
+        .cornerRadius(8.0)
+        .foregroundColor(Color("text-normal"))
+    }
   }
 }

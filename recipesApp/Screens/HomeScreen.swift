@@ -12,75 +12,83 @@ struct HomeScreen: View {
   private let categories = ["All","Apps", "Mains", "Sids", "Dess", "Dris","Other"]
   private let recipeNames = ["Fetuccine Alfredo", "Chivito uruguayo", "Walnut Roll", "Fresh sardines"]
   var body: some View {
-    ZStack {
-      Color("background-color")
-        .edgesIgnoringSafeArea(.all)
-      
-      ScrollView {
-        VStack(alignment: .leading){
-          AppBarView()
-          TagLineView()
-            .padding()
-          SearchAndScanView()
-          
-          ScrollView(.horizontal, showsIndicators: false){
-            HStack{
-              ForEach(0 ..< categories.count) { i in
-                // If index(i) == 1 then isActive is true
-                CategoryView(isActive: i == selectedIndex, text: categories[i])
-                  .onTapGesture {
-                    selectedIndex = i
-                  }
-              }
-            }.padding()
+    NavigationView {
+      ZStack {
+        Color("background-color")
+          .edgesIgnoringSafeArea(.all)
+        
+        ScrollView {
+          VStack(alignment: .leading){
+            AppBarView()
+            TagLineView()
+              .padding()
+            SearchAndScanView()
+            
+            ScrollView(.horizontal, showsIndicators: false){
+              HStack{
+                ForEach(0 ..< categories.count) { i in
+                  // If index(i) == 1 then isActive is true
+                  CategoryView(isActive: i == selectedIndex, text: categories[i])
+                    .onTapGesture {
+                      selectedIndex = i
+                    }
+                }
+              }.padding()
+            }
+            
+            Text("Popular")
+              .font(.custom("Inter-Bold", size: 26))
+              .padding(.horizontal)
+              .foregroundColor(Color("text-normal"))
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+              HStack {
+                ForEach(0 ..< 4) { index in
+                  NavigationLink(destination: {
+                    DetailScreen()
+                  }, label: {
+                    ProductCardView(image: Image("recipe-0\(index + 1)"), size: 210, recipeName: recipeNames[index])
+                  })
+                  .navigationBarHidden(true)
+                  .foregroundColor(.black)
+                }
+              }.padding(.trailing)
+            }
+            .padding(.leading)
+            
+            Text("Best")
+              .font(.custom("Inter-Bold", size: 26))
+              .padding(.horizontal)
+              .foregroundColor(Color("text-normal"))
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+              HStack {
+                ForEach(0 ..< 4) { index in
+                  ProductCardView(image: Image("recipe-0\(index + 1)"), size: 180, recipeName: recipeNames[index])
+                }
+              }.padding(.trailing)
+            }
+            .padding(.leading)
+            
+            
           }
-          
-          Text("Popular")
-            .font(.custom("Inter-Bold", size: 26))
-            .padding(.horizontal)
-            .foregroundColor(Color("text-normal"))
-          
-          ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-              ForEach(0 ..< 4) { index in
-                ProductCardView(image: Image("recipe-0\(index + 1)"), size: 210, recipeName: recipeNames[index])
-              }
-            }.padding(.trailing)
-          }
-          .padding(.leading)
-          
-          Text("Best")
-            .font(.custom("Inter-Bold", size: 26))
-            .padding(.horizontal)
-            .foregroundColor(Color("text-normal"))
-          
-          ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-              ForEach(0 ..< 4) { index in
-                ProductCardView(image: Image("recipe-0\(index + 1)"), size: 180, recipeName: recipeNames[index])
-              }
-            }.padding(.trailing)
-          }
-          .padding(.leading)
-          
+        }
+        
+        // Custom bottom navbar
+        HStack {
+          BottomNavbarItem(image: Image("home")){}
+          BottomNavbarItem(image: Image("fav")){}
+          BottomNavbarItem(image: Image("shop")){}
+          BottomNavbarItem(image: Image("user")){}
           
         }
+        .padding()
+        .background(Color.white)
+        .clipShape(Capsule())
+        .padding(.horizontal)
+        .shadow(color: Color.black.opacity(0.15), radius: 8, x: 2, y:6)
+        .frame(maxHeight: .infinity, alignment: .bottom)
       }
-      
-      // Custom bottom navbar
-      HStack {
-        BottomNavbarItem(image: Image("home")){}
-        BottomNavbarItem(image: Image("fav")){}
-        BottomNavbarItem(image: Image("shop")){}
-        BottomNavbarItem(image: Image("user")){}
-        
-      }
-      .padding()
-      .background(Color.white)
-      .clipShape(Capsule())
-      .padding(.horizontal)
-      .shadow(color: Color.black.opacity(0.15), radius: 8, x: 2, y:6)
-      .frame(maxHeight: .infinity, alignment: .bottom)
     }
   }
 }
